@@ -26,8 +26,10 @@ $mid=$row3['mid'];
 	$merchantID = $mid;
 	$amount = $price; //Amount will be based on Toman
 	$au = $_GET['Authority'];
+	$st = $_GET['Status'];
 	$url=$url;
-      //  $callBackUrl = $url.'/zarinpalcb.php?sid='.$sid;	
+      //  $callBackUrl = $url.'/zarinpalcb.php?sid='.$sid;
+      if($st == "OK"){
 	$client = new nusoap_client('https://www.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
 	$res = $client->call("PaymentVerification", array(
 	array(
@@ -36,11 +38,16 @@ $mid=$row3['mid'];
 				'Amount'		 => $amount
 				)
 	));
-if ($res['Status'] =="100") {
+      }else{
+      	header('Location: '.$url.'/payment/subscription/finish/state/failed');
+      }
+      
+      
+if ($res->Status =="100") {
 	//mysql_query("UPDATE `engine4_users` SET  `enabled` = '1' WHERE `user_id`='$uid'");
       header('Location: '.$url.'/payment/subscription/return?state=return');
 }
-if ($res['Status'] != 100) {
+if ($res->Status != 100) {
 	//mysql_query("UPDATE `engine4_users` SET  `enabled` = '1' WHERE `user_id`='$uid'");
       header('Location: '.$url.'/payment/subscription/finish/state/failed');
 
