@@ -30,7 +30,7 @@ $mid=$row3['mid'];
 	$url=$url;
       //  $callBackUrl = $url.'/zarinpalcb.php?sid='.$sid;
       if($st == "OK"){
-	$client = new nusoap_client('https://www.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
+	$client = new nusoap_client('https://de.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
 	$res = $client->call("PaymentVerification", array(
 	array(
 				'MerchantID'	 => $merchantID ,
