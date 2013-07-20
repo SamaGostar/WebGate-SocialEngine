@@ -25,7 +25,7 @@ $mid=$row3['mid'];
 include("nusoap/nusoap.php");
 $amount=$price;
 $callBackUrl = $url.'/zarinpalwgcb.php?sid='.$sid;
-$client = new nusoap_client('https://www.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
+$client = new nusoap_client('https://de.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
 $res = $client->call('PaymentRequest', array(
 array(
 					'MerchantID' 	=> $mid ,
