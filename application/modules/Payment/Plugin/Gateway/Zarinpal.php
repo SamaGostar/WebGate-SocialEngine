@@ -16,7 +16,7 @@
  * @copyright  Copyright 2006-2010 Webligo Developments
  * @license    http://www.socialengine.net/license/
  */
-class Payment_Plugin_Gateway_zarinpalwg extends Engine_Payment_Plugin_Abstract
+class Payment_Plugin_Gateway_Zarinpal extends Engine_Payment_Plugin_Abstract
 {
   protected $_gatewayInfo;
   
@@ -52,7 +52,7 @@ class Payment_Plugin_Gateway_zarinpalwg extends Engine_Payment_Plugin_Abstract
   public function getGateway()
   {
     if( null === $this->_gateway ) {
-      $class = 'Engine_Payment_Gateway_zarinpalwg';
+      $class = 'Engine_Payment_Gateway_Zarinpal';
       Engine_Loader::loadClass($class);
       $gateway = new $class(array(
         'config' => (array) $this->_gatewayInfo->config,
@@ -321,7 +321,7 @@ class Payment_Plugin_Gateway_zarinpalwg extends Engine_Payment_Plugin_Abstract
    */
   public function getAdminGatewayForm()
   {
-    return new Payment_Form_Admin_Gateway_zarinpalwg();
+    return new Payment_Form_Admin_Gateway_Zarinpal();
   }
   
   public function processAdminGatewayForm(array $values)

@@ -24,7 +24,7 @@ $url=$row3['url'];
 $mid=$row3['mid'];
 include("nusoap/nusoap.php");
 $amount=$price;
-$callBackUrl = $url.'/zarinpalwgcb.php?sid='.$sid;
+$callBackUrl = $url.'/zarinpalzgcb.php?sid='.$sid;
 $client = new nusoap_client('https://de.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
 $res = $client->call('PaymentRequest', array(
 array(
@@ -38,7 +38,7 @@ array(
 ) );
 if($res->Status == 100)
 {
-	header('Location: https://www.zarinpal.com/pg/StartPay/'.$res->Authority);
+	header('Location: https://www.zarinpal.com/pg/StartPay/'.$res->Authority . "/ZarinGate");
 }else{
 	echo'ERR: '.$res->Status;
 }

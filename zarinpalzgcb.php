@@ -35,7 +35,7 @@ $mid=$row3['mid'];
 	array(
 				'MerchantID'	 => $merchantID ,
 				'Authority' 	 => $au ,
-				'Amount'		 => $amount
+				'Amount'	 => $amount
 				)
 	));
       }else{
@@ -49,8 +49,8 @@ if ($res->Status =="100") {
 }
 if ($res->Status != 100) {
 	//mysql_query("UPDATE `engine4_users` SET  `enabled` = '1' WHERE `user_id`='$uid'");
-		echo'ERR: '.$res->Status;
-      header('Location: '.$url.'/payment/subscription/finish/state/failed');
+	echo'ERR: '.$res->Status;
+	 header('Location: '.$url.'/payment/subscription/finish/state/failed');
 
 }
 ?>
