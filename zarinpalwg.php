@@ -22,24 +22,36 @@ $select3=mysql_query($query3);
 $row3=mysql_fetch_array($select3);
 $url=$row3['url'];
 $mid=$row3['mid'];
-include("nusoap/nusoap.php");
-$amount=$price;
 $callBackUrl = $url.'/zarinpalwgcb.php?sid='.$sid;
-$client = new nusoap_client('https://de.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
-$res = $client->call('PaymentRequest', array(
-array(
-					'MerchantID' 	=> $mid ,
-					'Amount' 		=> $amount ,
-					'Description' 	=> $sid ,
-					'Email' 		=> $data['email'] ,
-					'Mobile' 		=> '' ,
-					'CallbackURL' 	=> $callBackUrl
-					)
-) );
-if($res->Status == 100)
+$amount=$price;
+$param_request = array(
+	'merchant_id' => $mid,
+	'amount' => $amount * 10,
+	'description' => $sid,
+	'callback_url' => $callBackUrl
+);
+$jsonData = json_encode($param_request);
+
+$ch = curl_init('https://api.zarinpal.com/pg/v4/payment/request.json');
+curl_setopt($ch, CURLOPT_USERAGENT, 'ZarinPal Rest Api v4');
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+	'Content-Type: application/json',
+	'Content-Length: ' . strlen($jsonData)
+));
+
+
+$result = curl_exec($ch);
+$err = curl_error($ch);
+$result = json_decode($result, true, JSON_PRETTY_PRINT);
+curl_close($ch);
+
+if($result['data']['code'] == 100)
 {
-	header('Location: https://www.zarinpal.com/pg/StartPay/'.$res->Authority);
+	header('Location: https://www.zarinpal.com/pg/StartPay/'.$result['data']['Authority']);
 }else{
-	echo'ERR: '.$res->Status;
+	echo'ERR: '.$result['errors']['code'];
 }
 ?>
