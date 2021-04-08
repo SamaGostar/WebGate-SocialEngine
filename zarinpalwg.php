@@ -25,10 +25,10 @@ $mid=$row3['mid'];
 $callBackUrl = $url.'/zarinpalwgcb.php?sid='.$sid;
 $amount=$price;
 $param_request = array(
-	'merchant_id' => $mid,
-	'amount' => $amount * 10,
-	'description' => $sid,
-	'callback_url' => $callBackUrl
+    'merchant_id' => $mid,
+    'amount' => $amount * 10,
+    'description' => $sid,
+    'callback_url' => $callBackUrl
 );
 $jsonData = json_encode($param_request);
 
@@ -38,8 +38,8 @@ curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
 curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-	'Content-Type: application/json',
-	'Content-Length: ' . strlen($jsonData)
+    'Content-Type: application/json',
+    'Content-Length: ' . strlen($jsonData)
 ));
 
 
@@ -50,8 +50,16 @@ curl_close($ch);
 
 if($result['data']['code'] == 100)
 {
-	header('Location: https://www.zarinpal.com/pg/StartPay/'.$result['data']['Authority']);
+    echo' <html><body>
+                    <script type="text/javascript" src="https://cdn.zarinpal.com/zarinak/v1/checkout.js"></script>
+                    <script type="text/javascript">
+                    window.onload = function () {
+                    Zarinak.setAuthority("' . $result['data']['authority'] . '");
+                    Zarinak.showQR();
+                    Zarinak.open();
+    };
+</script></body></html>';
 }else{
-	echo'ERR: '.$result['errors']['code'];
+    echo'ERR: '.$result['errors']['code'];
 }
 ?>
